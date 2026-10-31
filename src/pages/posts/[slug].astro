@@ -30,13 +30,16 @@ const { post } = Astro.props;
     <div class="wrap article-body" set:html={post.html} />
 
     <div class="wrap article-foot">
+      <p class="first-publish">
+        本文首發於 <a href={Astro.site?.href ?? '/'} target="_blank" rel="noopener">AI 科技資訊前沿博客</a>，轉載請註明出處。
+      </p>
       <p class="signature">
         AI 科技資訊前沿 · Vivian<br />
         Let's embrace AI .
       </p>
       {post.source && (
         <p class="source-line">
-          <strong>原文出處</strong>　<a href={post.source} target="_blank" rel="noopener">微信公眾號版本</a><br />
+          <strong>微信公眾號同步版</strong>　<a href={post.source} target="_blank" rel="noopener">前往公眾號閱讀</a><br />
           <strong>聲明</strong>　以上資訊僅供參考，不構成任何投資建議。
         </p>
       )}

@@ -52,13 +52,15 @@ run(
   '部署 Cloudflare Pages',
 );
 
-// 4) 推 GitHub（失敗不阻斷，網絡波動時可稍後手動推）
-try {
-  run('git', ['add', '-A'], '暫存改動');
-  run('git', ['-c', 'commit.gpgsign=false', 'commit', '-m', `發佈：${new Date().toISOString().slice(0, 16).replace('T', ' ')}`], '提交');
-  run('git', ['push', 'origin', 'main'], '推送 GitHub');
-} catch {
-  process.stdout.write('\n⚠️ GitHub 推送失敗（不影響已完成的部署），可稍後手動 git push\n');
+// 4) 推 GitHub（可用 --no-git 跳過；失敗不阻斷，網絡波動時可稍後手動推）
+if (!argv.includes('--no-git')) {
+  try {
+    run('git', ['add', '-A'], '暫存改動');
+    run('git', ['-c', 'commit.gpgsign=false', 'commit', '-m', `發佈：${new Date().toISOString().slice(0, 16).replace('T', ' ')}`], '提交');
+    run('git', ['push', 'origin', 'main'], '推送 GitHub');
+  } catch {
+    process.stdout.write('\n⚠️ GitHub 推送失敗（不影響已完成的部署），可稍後手動 git push\n');
+  }
 }
 
 process.stdout.write('\n✅ 完成：https://vivian-ai-tech-blog.pages.dev\n');

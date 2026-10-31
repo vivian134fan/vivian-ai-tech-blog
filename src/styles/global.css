@@ -302,6 +302,18 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   margin: 0 0 24px;
 }
 
+.first-publish {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin: 0 0 20px;
+}
+
+.first-publish a {
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
 .source-line {
   font-size: 13px;
   color: var(--ink-3);

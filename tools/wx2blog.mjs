@@ -24,6 +24,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import * as cheerio from 'cheerio';
 import TurndownService from 'turndown';
+import { tables } from 'turndown-plugin-gfm';
 
 const require = createRequire(import.meta.url);
 const OpenCC = require('opencc-js');
@@ -246,9 +247,37 @@ function splitBrParagraphs($, $content) {
 }
 
 function markMedia($, $content) {
-  const has = $content.find('mpvoice, mpvideo, iframe, video').length > 0;
-  $content.find('mpvoice, mpvideo, iframe, video').remove();
-  return has;
+  const kinds = { video: 0, audio: 0, card: 0 };
+
+  $content.find('mpvideo, iframe, video').each(() => { kinds.video += 1; });
+  $content.find('mpvoice, audio, qqmusic, mp-common-mpaudio').each(() => { kinds.audio += 1; });
+  $content.find('mp-miniprogram, mpproduct, mp-common-profile, mpcard, mp-common-mpcard').each(() => {
+    kinds.card += 1;
+  });
+
+  $content
+    .find(
+      'mpvideo, iframe, video, mpvoice, audio, qqmusic, mp-common-mpaudio, ' +
+        'mp-miniprogram, mpproduct, mp-common-profile, mpcard, mp-common-mpcard',
+    )
+    .remove();
+
+  return kinds;
+}
+
+/** 產出「原文另含影片／小程序」的說明，有原文連結時直接給可點連結 */
+function mediaNote(kinds, url) {
+  const parts = [];
+  if (kinds.video) parts.push('影片');
+  if (kinds.audio) parts.push('語音');
+  if (kinds.card) parts.push('小程序卡片');
+  if (!parts.length) return '';
+
+  const list = parts.join('、');
+  const link = url
+    ? `，可[前往微信公眾號原文觀看](${url})`
+    : '，可前往微信公眾號原文觀看';
+  return `\n\n> 說明：本文原文另含微信內嵌${list}，博客版無法呈現${link}。\n`;
 }
 
 /* ------------------------------------------------------------------ */
@@ -344,6 +373,8 @@ function toMarkdown($, $content) {
     codeBlockStyle: 'fenced',
     emDelimiter: '*',
   });
+
+  td.use(tables);
 
   td.addRule('stripStyles', {
     filter: (node) =>
@@ -470,7 +501,16 @@ function makeSlug(title, date) {
 function makeDescription(md, fallback) {
   const body = md
     .split('\n')
-    .filter((l) => !/^#{1,6}\s/.test(l.trim()))
+    // 排除標題、引言提示（> 說明／> 提示）、表格分隔行
+    .filter((l) => {
+      const t = l.trim();
+      return (
+        !/^#{1,6}\s/.test(t) &&
+        !t.startsWith('>') &&
+        !t.startsWith('|') &&
+        !/^\|?[\s:|-]+\|?$/.test(t)
+      );
+    })
     .join('\n');
   const plain = body
     .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
@@ -525,9 +565,16 @@ async function convert(opts) {
 
   let md = cleanMarkdown(toMarkdown($, $content), title);
 
+  // 文末說明：無法搬遷的媒體、需要人工核對的表格
+  const notes = [];
   if (hadMedia) {
-    md += '\n\n> 原文另含影片或語音內容，可前往公眾號原文觀看。\n';
+    const note = mediaNote(hadMedia, url).trim();
+    if (note) notes.push(note);
   }
+  if ($content.find('table').length > 0) {
+    notes.push('> 提示：本文原文含表格，博客版已盡量保留，發佈前請人工核對一次行列與數字。');
+  }
+  if (notes.length) md += `\n\n${notes.join('\n\n')}\n`;
 
   if (opts.convert) {
     md = conv(md);

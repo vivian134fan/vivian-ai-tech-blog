@@ -5,16 +5,19 @@ interface Props {
   title: string;
   description?: string;
   type?: string;
+  canonical?: string;
 }
 
 const {
   title,
   description = 'AI 科技資訊前沿・每日整理全球人工智能前沿動態，附出處與核實紀錄。',
   type = 'website',
+  canonical,
 } = Astro.props;
 
 const siteName = 'AI 科技資訊前沿';
 const fullTitle = title === siteName ? siteName : `${title}｜${siteName}`;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).href;
 ---
 
 <!doctype html>
@@ -24,9 +27,11 @@ const fullTitle = title === siteName ? siteName : `${title}｜${siteName}`;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta name="theme-color" content="#013DFD" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
