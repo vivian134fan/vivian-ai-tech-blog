@@ -7,7 +7,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "wx": "node tools/wx2blog.mjs"
+    "wx": "node tools/wx2blog.mjs",
+    "deploy": "astro build && wrangler pages deploy dist --project-name=vivian-ai-tech-blog --branch=main --commit-dirty=true",
+    "publish": "node tools/publish.mjs"
   },
   "dependencies": {
     "astro": "^5.0.0",
@@ -16,5 +18,8 @@
     "marked": "^15.0.0",
     "opencc-js": "^1.0.5",
     "turndown": "^7.2.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.156.0"
   }
 }
