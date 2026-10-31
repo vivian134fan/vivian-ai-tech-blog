@@ -31,6 +31,24 @@ const fullTitle = title === siteName ? siteName : `${title}｜${siteName}`;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
+    <script is:inline>
+      // 分享連結（?sharecode=xxx）需要帶到站內每個連結與圖片，否則子頁面會被攔截
+      (function () {
+        var sc = new URLSearchParams(location.search).get('sharecode');
+        if (!sc) return;
+        function withCode(el, attr) {
+          var v = el.getAttribute(attr);
+          if (!v || /^(https?:|data:|mailto:|#|\/\/)/.test(v)) return;
+          var u = new URL(v, location.origin);
+          u.searchParams.set('sharecode', sc);
+          el.setAttribute(attr, u.pathname + u.search);
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+          document.querySelectorAll('a[href]').forEach(function (a) { withCode(a, 'href'); });
+          document.querySelectorAll('img[src]').forEach(function (i) { withCode(i, 'src'); });
+        });
+      })();
+    </script>
     <header class="topbar">
       <div class="inner">
         <a class="brand" href="/"><span class="dot"></span>{siteName}</a>
