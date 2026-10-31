@@ -1,0 +1,20 @@
+{
+  "name": "ai-frontier-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "wx": "node tools/wx2blog.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "cheerio": "^1.0.0",
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.0",
+    "opencc-js": "^1.0.5",
+    "turndown": "^7.2.0"
+  }
+}

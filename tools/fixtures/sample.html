@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>【範例】轉換管線測試：一篇公眾號文章的搬家結果</title>
+    <meta property="og:title" content="【範例】轉換管線測試：一篇公眾號文章的搬家結果" />
+    <meta name="author" content="Vivian" />
+  </head>
+  <body>
+    <h1 class="rich_media_title" id="activity-name">
+      【範例】轉換管線測試：一篇公眾號文章的搬家結果
+    </h1>
+    <em id="publish_time">2026-10-31 12:02</em>
+
+    <div class="rich_media_content js_underline_content" id="js_content">
+      <section style="text-align: center; margin-bottom: 24px;">
+        <img
+          data-src="demo-cover.svg"
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          style="width: 100%;"
+        />
+      </section>
+
+      <section style="margin: 1.5em 0;">
+        <span style="font-weight: 700;">第一則消息，來自美國</span>
+      </section>
+
+      <section style="line-height: 1.9; color: #333;">
+        這是一段用 section 加 br 排出來的假段落，公眾號編輯器最常見的做法。<br />
+        第二行其實應該獨立成段，否則在博客上會黏成一坨。<br />
+        第三行也是同樣道理。
+      </section>
+
+      <p style="margin: 1.2em 0;">
+        真正的段落標籤，內含 <strong>粗體字</strong>、<span style="color: #576b95;">彩色字</span>與
+        <a href="https://example.com/report">一條超連結</a>。
+      </p>
+
+      <p style="margin: 1.2em 0;">这个模型已经发布，芯片厂商还在验证，质检流程也更新了。</p>
+
+      <section>
+        <section>
+          <p>嵌套兩層 section 裡的段落，轉換後不應丟失。</p>
+        </section>
+      </section>
+
+      <section>
+        <span>列表測試：</span>
+        <ul>
+          <li>第一項：保留層級</li>
+          <li>第二項：保留符號</li>
+        </ul>
+      </section>
+
+      <p>预览时标签不可点</p>
+      <div id="js_pc_qr_code"><p>微信扫一扫关注该公众号</p></div>
+      <section class="reward_area"><p>赞赏</p></section>
+      <p>轻触阅读原文</p>
+
+      <p>- 完 -</p>
+      <p>AI 科技資訊前沿 · Vivian</p>
+      <p>Let's embrace AI .</p>
+      <p>以上資訊僅供參考，不構成任何投資建議。</p>
+    </div>
+  </body>
+</html>

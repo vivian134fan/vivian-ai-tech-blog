@@ -1,0 +1,46 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/posts';
+
+export function getStaticPaths() {
+  return getPosts().map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+---
+
+<Base title={post.title} description={post.description} type="article">
+  <article>
+    <header class="article-head">
+      <div class="wrap">
+        <div class="meta">
+          <time datetime={post.date}>{post.dateLabel}</time>
+          <span class="sep">|</span>
+          <span>閱讀約 {post.minutes} 分鐘</span>
+        </div>
+        <h1>{post.title}</h1>
+        {post.tags.length > 0 && (
+          <div class="tags">
+            {post.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="wrap article-body" set:html={post.html} />
+
+    <div class="wrap article-foot">
+      <p class="signature">
+        AI 科技資訊前沿 · Vivian<br />
+        Let's embrace AI .
+      </p>
+      {post.source && (
+        <p class="source-line">
+          <strong>原文出處</strong>　<a href={post.source} target="_blank" rel="noopener">微信公眾號版本</a><br />
+          <strong>聲明</strong>　以上資訊僅供參考，不構成任何投資建議。
+        </p>
+      )}
+      <a class="back-link" href="/">← 返回文章列表</a>
+    </div>
+  </article>
+</Base>

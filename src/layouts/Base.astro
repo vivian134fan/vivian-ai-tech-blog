@@ -1,0 +1,59 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  type?: string;
+}
+
+const {
+  title,
+  description = 'AI 科技資訊前沿・每日整理全球人工智能前沿動態，附出處與核實紀錄。',
+  type = 'website',
+} = Astro.props;
+
+const siteName = 'AI 科技資訊前沿';
+const fullTitle = title === siteName ? siteName : `${title}｜${siteName}`;
+---
+
+<!doctype html>
+<html lang="zh-Hant-HK">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta name="theme-color" content="#013DFD" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="inner">
+        <a class="brand" href="/"><span class="dot"></span>{siteName}</a>
+        <nav class="nav">
+          <a href="/">文章</a>
+          <a href="/about">關於</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-foot">
+      <div class="wrap">
+        <div class="grad"></div>
+        <p>
+          {siteName} · Vivian<br />
+          Let's embrace AI .
+        </p>
+        <p>以上資訊僅供參考，不構成任何投資建議。</p>
+      </div>
+    </footer>
+  </body>
+</html>

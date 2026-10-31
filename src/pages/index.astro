@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPosts } from '../lib/posts';
+
+const posts = getPosts();
+---
+
+<Base title="AI 科技資訊前沿">
+  <section class="hero">
+    <div class="wrap">
+      <p class="kicker">AI Frontier Daily</p>
+      <h1>每日一則，讀懂人工智能前沿</h1>
+      <p>
+        整理全球模型發布、產品更新與產業動向，每則附出處與核實紀錄。內容與微信公眾號同步，適合在瀏覽器收藏與檢索。
+      </p>
+    </div>
+  </section>
+
+  <section class="list">
+    <div class="wrap">
+      {posts.length === 0 && <p style="color: var(--ink-3); padding: 40px 0;">尚未有文章。執行轉換腳本後即會出現。</p>}
+      {posts.map((post) => (
+        <a class="post-item" href={`/posts/${post.slug}/`}>
+          <time datetime={post.date}>{post.dateLabel}　·　閱讀約 {post.minutes} 分鐘</time>
+          <h2>{post.title}</h2>
+          {post.description && <p>{post.description}</p>}
+          {post.tags.length > 0 && (
+            <div class="tags">
+              {post.tags.map((t) => <span class="tag">{t}</span>)}
+            </div>
+          )}
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
