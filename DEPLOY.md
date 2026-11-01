@@ -28,11 +28,16 @@ npm run publish -- --url "https://mp.weixin.qq.com/s/xxxx"
 分步命令（想一步一步來時用）：
 
 ```bash
+npm run check                                      # 品牌紅線（零已廢除口號）→ 必須 exit 0
 npm run wx -- "https://mp.weixin.qq.com/s/xxxx"   # 只轉換，先檢查 md
 npm run dev                                        # 本地預覽 http://localhost:4321
 npm run build                                      # 只構建
 npm run deploy                                     # 構建＋部署（不推 GitHub）
 ```
+
+> ⛔ **品牌紅線（2026-11-02 起）**：`npm run publish` 會在構建之前先跑 `tools/check-brand.mjs`，
+> 掃到「Let's embrace AI」或「讓我們擁抱 AI」（任何大小寫／撇號變體）即 **exit 1 並中止部署**。
+> 頁尾同文章署名只准留 `AI 科技資訊前沿 · Vivian`，唔准第三行。
 
 ## 已知問題（都不影響使用）
 
