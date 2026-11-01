@@ -27,6 +27,15 @@ if (urlIdx !== -1 && argv[urlIdx + 1]) {
 
 // 2) 構建（WorkBuddy 沙盒會攔 Astro 清空 dist 的 removeEmptyDirs，令退出碼為 1，
 //    但產物其實已生成——所以這裡驗證 dist/index.html 是否新鮮，而非只看退出碼）
+// 2) 品牌紅線閘門（2026-11-02 起硬性）：有已廢除口號就唔准部署
+process.stdout.write('\n▶ 品牌紅線檢查\n');
+try {
+  execFileSync('node', ['tools/check-brand.mjs'], { cwd: ROOT, stdio: 'inherit' });
+} catch {
+  process.stdout.write('\n❌ 品牌紅線唔過（頁尾／署名仍有已廢除口號），已中止部署\n');
+  process.exit(1);
+}
+
 process.stdout.write('\n▶ 構建靜態站\n');
 let buildOk = true;
 try {

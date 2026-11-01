@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "wx": "node tools/wx2blog.mjs",
+    "check": "node tools/check-brand.mjs",
     "deploy": "node tools/publish.mjs --no-git",
     "publish": "node tools/publish.mjs"
   },
